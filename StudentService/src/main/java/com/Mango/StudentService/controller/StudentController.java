@@ -1,9 +1,7 @@
 package com.Mango.StudentService.controller;
 
 import com.Mango.StudentService.model.Student;
-import com.Mango.StudentService.repository.StudentRepository;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
+import com.Mango.StudentService.service.StudentService;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -14,60 +12,39 @@ import java.util.List;
 @RequestMapping("/students")
 public class StudentController {
 
-    private final StudentRepository studentRepository;
+    private final StudentService studentService;
 
-    public StudentController(StudentRepository studentRepository) {
-        this.studentRepository = studentRepository;
+    public StudentController(StudentService studentService) {
+        this.studentService = studentService;
     }
 
     @GetMapping
     public List<Student> getStudents() {
-        return studentRepository.findAll();
-    }
-
-    @PostMapping
-    public Student addStudent(@RequestBody @Valid Student student) {
-        return studentRepository.save(student);
+        return studentService.gestStudents();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Student> getStudent(@PathVariable Long id) {
-        return studentRepository.findById(id).map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public Student getStudent(@PathVariable Long id) {
+        return studentService.getStudent(id);
+    }
+    @PostMapping
+    public Student addStudent(@RequestBody @Valid Student student) {
+        return studentService.addStudent(student);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteStudent(@PathVariable Long id) {
-        return studentRepository.findById(id)
-                .map(student -> {
-                    studentRepository.delete(student);
-                    return ResponseEntity.ok().build();
-                }).orElseGet(() -> ResponseEntity.notFound().build());
+    public void deleteStudent(@PathVariable Long id) {
+        studentService.deleteStudent(id);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Student> putStudent(@PathVariable Long id, @Valid @RequestBody Student student) {
-        return studentRepository.findById(id)
-                .map(studentFromDb -> {
-                    studentFromDb.setFirstName(student.getFirstName());
-                    studentFromDb.setLastName(student.getLastName());
-                    studentFromDb.setEmail(student.getEmail());
-                    return ResponseEntity.ok().body(studentRepository.save(studentFromDb));
-                }).orElseGet(() -> ResponseEntity.notFound().build());
+    public Student putStudent(@PathVariable Long id, @Valid @RequestBody Student student) {
+        return studentService.putStudent(id, student);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Student> patchStudent(@PathVariable Long id, @RequestBody Student student) {
-        return studentRepository.findById(id)
-                .map(studentFromDb -> {
-                    if (!StringUtils.isEmpty(student.getFirstName())) {
-                        studentFromDb.setFirstName(student.getFirstName());
-                    }
-                    if (!StringUtils.isEmpty(student.getLastName())) {
-                        studentFromDb.setLastName(student.getLastName());
-                    }
-                    return ResponseEntity.ok().body(studentRepository.save(studentFromDb));
-                }).orElseGet(() -> ResponseEntity.notFound().build());
+    public Student patchStudent(@PathVariable Long id, @RequestBody Student student) {
+        return studentService.patchStudent(id, student);
     }
 
 }
