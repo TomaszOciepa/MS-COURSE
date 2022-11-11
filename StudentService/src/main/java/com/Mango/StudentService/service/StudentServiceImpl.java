@@ -19,23 +19,23 @@ public class StudentServiceImpl implements StudentService {
     }
 
 
-    public List<Student> getStudents(Student.Status status)
-    {
-        if(status!=null){
+    public List<Student> getStudents(Student.Status status) {
+        if (status != null) {
             return studentRepository.findAllByStatus(status);
         }
         return studentRepository.findAll();
     }
 
-    public Student getStudent(Long id){
-       Student student = studentRepository.findById(id)
+    public Student getStudent(Long id) {
+        Student student = studentRepository.findById(id)
                 .orElseThrow(() -> new StudentException(StudentError.STUDENT_NOT_FOUND));
 
-       if(!Student.Status.ACTIVE.equals(student.getStatus())){
-           throw new StudentException(StudentError.STUDENT_IS_NOT_ACTIVE);
-       }
-       return student;
+        if (!Student.Status.ACTIVE.equals(student.getStatus())) {
+            throw new StudentException(StudentError.STUDENT_IS_NOT_ACTIVE);
+        }
+        return student;
     }
+
     @Override
     public Student addStudent(Student student) {
         validateStudentEmailExists(student);
@@ -54,16 +54,21 @@ public class StudentServiceImpl implements StudentService {
     public Student putStudent(Long id, Student student) {
         return studentRepository.findById(id)
                 .map(studentFromDb -> {
-                    validateStudentEmailExists(student);
+                    if (!studentFromDb.getEmail().equals(student.getEmail()) &&
+                            studentRepository.existsByEmail(student.getEmail())
+                    ) {
+                        throw new StudentException(StudentError.STUDENT_EMAIL_ALREADY_EXISTS);
+                    }
                     studentFromDb.setFirstName(student.getFirstName());
                     studentFromDb.setLastName(student.getLastName());
                     studentFromDb.setEmail(student.getEmail());
+                    studentFromDb.setStatus(student.getStatus());
                     return studentRepository.save(studentFromDb);
                 }).orElseThrow(() -> new StudentException(StudentError.STUDENT_NOT_FOUND));
     }
 
     private void validateStudentEmailExists(Student student) {
-        if(studentRepository.existsByEmail(student.getEmail())){
+        if (studentRepository.existsByEmail(student.getEmail())) {
             throw new StudentException(StudentError.STUDENT_EMAIL_ALREADY_EXISTS);
         }
     }
@@ -77,6 +82,9 @@ public class StudentServiceImpl implements StudentService {
                     }
                     if (!StringUtils.isEmpty(student.getLastName())) {
                         studentFromDb.setLastName(student.getLastName());
+                    }
+                    if (!StringUtils.isEmpty(student.getStatus())) {
+                        studentFromDb.setStatus(student.getStatus());
                     }
                     return studentRepository.save(studentFromDb);
                 }).orElseThrow(() -> new StudentException(StudentError.STUDENT_NOT_FOUND));
