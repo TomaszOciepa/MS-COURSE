@@ -29,6 +29,7 @@ public class StudentServiceImpl implements StudentService {
     }
     @Override
     public Student addStudent(Student student) {
+        validateStudentEmailExists(student);
         return studentRepository.save(student);
     }
 
@@ -43,11 +44,18 @@ public class StudentServiceImpl implements StudentService {
     public Student putStudent(Long id, Student student) {
         return studentRepository.findById(id)
                 .map(studentFromDb -> {
+                    validateStudentEmailExists(student);
                     studentFromDb.setFirstName(student.getFirstName());
                     studentFromDb.setLastName(student.getLastName());
                     studentFromDb.setEmail(student.getEmail());
                     return studentRepository.save(studentFromDb);
                 }).orElseThrow(() -> new StudentException(StudentError.STUDENT_NOT_FOUND));
+    }
+
+    private void validateStudentEmailExists(Student student) {
+        if(studentRepository.existsByEmail(student.getEmail())){
+            throw new StudentException(StudentError.STUDENT_EMAIL_ALREADY_EXISTS);
+        }
     }
 
     @Override
