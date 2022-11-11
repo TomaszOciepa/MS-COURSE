@@ -28,8 +28,13 @@ public class StudentServiceImpl implements StudentService {
     }
 
     public Student getStudent(Long id){
-        return studentRepository.findById(id)
+       Student student = studentRepository.findById(id)
                 .orElseThrow(() -> new StudentException(StudentError.STUDENT_NOT_FOUND));
+
+       if(!Student.Status.ACTIVE.equals(student.getStatus())){
+           throw new StudentException(StudentError.STUDENT_IS_NOT_ACTIVE);
+       }
+       return student;
     }
     @Override
     public Student addStudent(Student student) {
