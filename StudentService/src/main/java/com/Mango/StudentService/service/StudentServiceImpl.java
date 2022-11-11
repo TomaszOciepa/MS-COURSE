@@ -18,8 +18,12 @@ public class StudentServiceImpl implements StudentService {
         this.studentRepository = studentRepository;
     }
 
-    @Override
-    public List<Student> gestStudents() {
+
+    public List<Student> getStudents(Student.Status status)
+    {
+        if(status!=null){
+            return studentRepository.findAllByStatus(status);
+        }
         return studentRepository.findAll();
     }
 

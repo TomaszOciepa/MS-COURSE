@@ -18,9 +18,11 @@ public class StudentController {
         this.studentService = studentService;
     }
 
+//    required = false; oznacza, że parametr nie jest wymagany
     @GetMapping
-    public List<Student> getStudents() {
-        return studentService.gestStudents();
+    public List<Student> getStudents(@RequestParam(required = false) Student.Status status) {
+
+        return studentService.getStudents(status);
     }
 
     @GetMapping("/{id}")

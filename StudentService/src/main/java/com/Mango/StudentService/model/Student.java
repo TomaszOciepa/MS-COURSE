@@ -1,15 +1,7 @@
 package com.Mango.StudentService.model;
 
-//import jakarta.validation.constraints.Email;
-//import jakarta.validation.constraints.NotBlank;
-//import jakarta.validation.constraints.NotEmpty;
-//import jakarta.validation.constraints.Size;
-
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 
 @Entity
@@ -32,6 +24,13 @@ public class Student {
     @Column(unique = true)
     private String email;
 
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private Status status;
+    public enum Status{
+        ACTIVE,
+        INACTIVE
+    }
     public Long getId() {
         return id;
     }
@@ -62,6 +61,14 @@ public class Student {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }
 

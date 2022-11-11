@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface StudentService {
 
-    List<Student> gestStudents();
+    List<Student> getStudents(Student.Status status);
 
     Student getStudent(Long id);
     Student addStudent(Student student);
