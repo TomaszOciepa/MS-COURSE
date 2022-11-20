@@ -12,6 +12,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Document
 @Getter
@@ -38,6 +40,7 @@ public class Course {
     @NotNull
     private Status status;
 
+    private List<CourseMembers> courseMembers = new ArrayList<>();
     public enum Status {
         ACTIVE,
         INACTIVE,

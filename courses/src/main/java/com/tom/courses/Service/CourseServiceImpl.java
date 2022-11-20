@@ -35,4 +35,13 @@ public class CourseServiceImpl implements CourseService {
         course.validateCourse();
         return courseRepository.save(course);
     }
+
+    @Override
+    public void courseEnrollment(Long studentId, String courseCode) {
+        Course course = getCourse(courseCode);
+
+        if(!Course.Status.ACTIVE.equals(course.getStatus())){
+            throw new CourseException(CourseError.COURSE_IS_NOT_ACTIVE);
+        }
+    }
 }
