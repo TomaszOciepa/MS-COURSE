@@ -2,6 +2,8 @@ package com.tom.courses.model;
 
 import com.tom.courses.exceptions.CourseError;
 import com.tom.courses.exceptions.CourseException;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -12,6 +14,8 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Document
+@Getter
+@Setter
 public class Course {
 
     @Id
@@ -68,67 +72,5 @@ public class Course {
         }
     }
 
-    public String getCode() {
-        return code;
-    }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescriptions() {
-        return descriptions;
-    }
-
-    public void setDescriptions(String descriptions) {
-        this.descriptions = descriptions;
-    }
-
-    public LocalDateTime getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDateTime startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDateTime getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDateTime endDate) {
-        this.endDate = endDate;
-    }
-
-    public Long getParticipantsLimit() {
-        return participantsLimit;
-    }
-
-    public void setParticipantsLimit(Long participantsLimit) {
-        this.participantsLimit = participantsLimit;
-    }
-
-    public Long getParticipantsNumber() {
-        return participantsNumber;
-    }
-
-    public void setParticipantsNumber(Long participantsNumber) {
-        this.participantsNumber = participantsNumber;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
 }
