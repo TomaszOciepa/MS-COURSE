@@ -8,7 +8,8 @@ public enum CourseError {
     COURSE_CAN_NOT_SET_FULL_STATUS("Course can not set Full status"),
     COURSE_CAN_NOT_SET_ACTIVE_STATUS("Course can not set Active status"),
     COURSE_IS_NOT_ACTIVE("Course is not Active"),
-    STUDENT_IS_NOT_ACTIVE("Student is not Active");
+    STUDENT_IS_NOT_ACTIVE("Student is not Active"),
+    STUDENT_AlREADY_ENROLLED("Student already enrolled");
     private String message;
 
     CourseError(String message) {
