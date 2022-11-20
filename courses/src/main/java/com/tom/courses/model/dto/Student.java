@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -17,4 +18,11 @@ public class Student {
     private String lastName;
     @NotBlank
     private String email;
+
+    @NotNull
+    private Status status;
+    public enum Status{
+        ACTIVE,
+        INACTIVE
+    }
 }

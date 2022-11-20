@@ -7,7 +7,8 @@ public enum CourseError {
     COURSE_PARTICIPANTS_LIMIT_IS_EXCEEDED("Course participants limit is exceeded"),
     COURSE_CAN_NOT_SET_FULL_STATUS("Course can not set Full status"),
     COURSE_CAN_NOT_SET_ACTIVE_STATUS("Course can not set Active status"),
-    COURSE_IS_NOT_ACTIVE("Course is not Active");
+    COURSE_IS_NOT_ACTIVE("Course is not Active"),
+    STUDENT_IS_NOT_ACTIVE("Student is not Active");
     private String message;
 
     CourseError(String message) {
