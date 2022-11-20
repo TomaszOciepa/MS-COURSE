@@ -40,7 +40,8 @@ public class Course {
     @NotNull
     private Status status;
 
-    private List<CourseMembers> courseMembers = new ArrayList<>();
+    private List<CourseMember> courseMembers = new ArrayList<>();
+
     public enum Status {
         ACTIVE,
         INACTIVE,
@@ -51,6 +52,13 @@ public class Course {
         validateCourseDate();
         validateParticipantsLimit();
         vaildateStatus();
+    }
+
+    public void incrementParticipantsNumber() {
+        participantsNumber++;
+        if (participantsNumber.equals(participantsLimit)) {
+            setStatus(Course.Status.FULL);
+        }
     }
 
     private void validateCourseDate() {

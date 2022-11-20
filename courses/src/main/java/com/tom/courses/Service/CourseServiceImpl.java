@@ -3,7 +3,7 @@ package com.tom.courses.Service;
 import com.tom.courses.exceptions.CourseError;
 import com.tom.courses.exceptions.CourseException;
 import com.tom.courses.model.Course;
-import com.tom.courses.model.CourseMembers;
+import com.tom.courses.model.CourseMember;
 import com.tom.courses.model.dto.Student;
 import com.tom.courses.repository.CourseRepository;
 import org.springframework.stereotype.Service;
@@ -41,14 +41,17 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public void courseEnrollment(Long studentId, String courseCode) {
+    public void courseEnrollment( String courseCode, Long studentId) {
         Course course = getCourse(courseCode);
-
-        if (!Course.Status.ACTIVE.equals(course.getStatus())) {
-            throw new CourseException(CourseError.COURSE_IS_NOT_ACTIVE);
-        }
-
+        validateCourseStatus(course);
         Student student = studentServiceClient.getStudentById(studentId);
+        validateStudentBeforeCourseEnrollment(course, student);
+        course.incrementParticipantsNumber();
+        course.getCourseMembers().add(new CourseMember(student.getEmail()));
+        courseRepository.save(course);
+    }
+
+    private void validateStudentBeforeCourseEnrollment(Course course, Student student) {
         if (!Student.Status.ACTIVE.equals(student.getStatus())) {
             throw new CourseException(CourseError.STUDENT_IS_NOT_ACTIVE);
         }
@@ -58,15 +61,11 @@ public class CourseServiceImpl implements CourseService {
             throw new CourseException(CourseError.STUDENT_AlREADY_ENROLLED);
 
         }
+    }
 
-        course.setParticipantsNumber(course.getParticipantsNumber() + 1);
-
-        if(course.getParticipantsNumber().equals(course.getParticipantsLimit())){
-            course.setStatus(Course.Status.FULL);
+    private void validateCourseStatus(Course course) {
+        if (!Course.Status.ACTIVE.equals(course.getStatus())) {
+            throw new CourseException(CourseError.COURSE_IS_NOT_ACTIVE);
         }
-
-        course.getCourseMembers().add(new CourseMembers(student.getEmail()));
-
-        courseRepository.save(course);
     }
 }

@@ -6,14 +6,14 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Getter
-public class CourseMembers {
+public class CourseMember {
 
     @NotNull
     private LocalDateTime enrollmentData;
     @NotNull
     private String email;
 
-    public CourseMembers(@NotNull String email) {
+    public CourseMember(@NotNull String email) {
         this.enrollmentData = LocalDateTime.now();
         this.email = email;
     }
