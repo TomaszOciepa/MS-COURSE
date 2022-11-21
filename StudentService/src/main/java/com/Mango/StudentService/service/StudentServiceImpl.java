@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -88,5 +89,20 @@ public class StudentServiceImpl implements StudentService {
                     }
                     return studentRepository.save(studentFromDb);
                 }).orElseThrow(() -> new StudentException(StudentError.STUDENT_NOT_FOUND));
+    }
+// metoda słaba wydajnościowo przez stream
+//    @Override
+//    public List<Student> getStudentsByEmail(List<String> emails) {
+//
+//        return studentRepository.findAll()
+//                .stream()
+//                .filter(student ->emails.contains(student.getEmail()))
+//                .collect(Collectors.toList());
+//    }
+
+    // lepsza metoda ponieważ szuka bezpośrednio w bazie
+    public List<Student> getStudentsByEmail(List<String> emails) {
+
+        return studentRepository.findAllByEmailIn(emails);
     }
 }

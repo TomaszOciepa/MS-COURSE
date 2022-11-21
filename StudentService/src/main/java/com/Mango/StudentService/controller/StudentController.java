@@ -24,6 +24,10 @@ public class StudentController {
 
         return studentService.getStudents(status);
     }
+    @PostMapping ("/emails")
+    public List<Student> getStudentsByEmail(@RequestBody List<String> emails){
+        return studentService.getStudentsByEmail(emails);
+    }
 
     @GetMapping("/{id}")
     public Student getStudent(@PathVariable Long id) {

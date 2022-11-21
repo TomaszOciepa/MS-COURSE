@@ -1,9 +1,8 @@
 package com.tom.courses.Controller;
 
 import com.tom.courses.Service.CourseService;
-import com.tom.courses.Service.StudentServiceClient;
 import com.tom.courses.model.Course;
-import com.tom.courses.model.dto.Student;
+import com.tom.courses.model.dto.StudentDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,5 +38,10 @@ public class CourseController {
     public ResponseEntity<?> courseEnrollment(@PathVariable String courseCode, @PathVariable Long studentId){
         courseService.courseEnrollment(courseCode, studentId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{code}/members")
+    public List<StudentDto> getCourseMembers(@PathVariable String code){
+        return courseService.getCourseMembers(code);
     }
 }
