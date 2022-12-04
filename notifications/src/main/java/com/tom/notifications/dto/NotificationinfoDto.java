@@ -1,19 +1,18 @@
-package com.tom.courses.model.dto;
+package com.tom.notifications.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.data.mongodb.core.mapping.Document;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+
 @Builder
-@Document
 @Getter
 @Setter
+@ToString
 public class NotificationinfoDto {
 
     private List<String> emails;
@@ -24,6 +23,7 @@ public class NotificationinfoDto {
     private LocalDateTime courseStartDate;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime courseEndDate;
+
 
 
 }
