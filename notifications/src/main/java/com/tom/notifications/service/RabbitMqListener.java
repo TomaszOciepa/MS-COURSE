@@ -2,8 +2,6 @@ package com.tom.notifications.service;
 
 import com.tom.notifications.dto.NotificationinfoDto;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +11,14 @@ public class RabbitMqListener {
 
 //    Logger logger = LoggerFactory.getLogger(RabbitMqListener.class);
 
+    private final EmailSender emailSender;
+
+    public RabbitMqListener(EmailSender emailSender) {
+        this.emailSender = emailSender;
+    }
+
     @RabbitListener(queues = "enroll_finish")
     public void handleFinishEnroll(NotificationinfoDto notificationinfo){
-        log.info(notificationinfo.toString());
+        emailSender.sendEmails(notificationinfo);
     }
 }
